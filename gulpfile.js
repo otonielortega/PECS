@@ -1,11 +1,15 @@
 var fs = require('fs');
 var path = require('path');
+var print = require('gulp-print');
+var filter = require('gulp-filter');
 
 var gulp = require('gulp');
 
 // Load all gulp plugins automatically
 // and attach them to the `plugins` object
 var plugins = require('gulp-load-plugins')();
+
+var mainBowerFiles = require('main-bower-files');
 
 // Temporary solution until gulp 4
 // https://github.com/gulpjs/gulp/issues/355
@@ -73,8 +77,22 @@ gulp.task('copy', [
     'copy:license',
     'copy:main.css',
     'copy:misc',
-    'copy:normalize'
+    'copy:normalize',
+    'copy:bower_files'
 ]);
+
+gulp.task('copy:bower_files', function() {
+
+    const jsFilter = filter('**/*.js', {restore: true});
+
+
+    return gulp.src(mainBowerFiles())
+        .pipe(jsFilter)
+        .pipe(print(function(filepath) {
+            return "found bower files: " +dirs.dist + '/js/vendor' + filepath;
+        }))
+        .pipe(gulp.dest(dirs.dist + '/js/vendor'));
+});
 
 gulp.task('copy:.htaccess', function () {
     return gulp.src('node_modules/apache-server-configs/dist/.htaccess')

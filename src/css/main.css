@@ -91,7 +91,16 @@ textarea {
 
 
 
-
+.demo {
+    background: #f3eee6;
+    width: 500px;
+    height: 300px;
+}
+.demo .pep {
+    background: #f5b188;
+    height: 100px;
+    width: 100px;
+}
 
 
 
